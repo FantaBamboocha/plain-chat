@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
-import styles from "./styles.module.scss";
+import axios from "axios";
 
+import styles from "./styles.module.scss";
 // import socket from "../../socket";
 
 const JoinBlock = () => {
@@ -43,6 +44,10 @@ const JoinBlock = () => {
     if (validateForm()) {
       console.log(formData);
     }
+
+    axios.post("http://localhost:3000/", formData).then((response) => {
+      console.log(response.data);
+    });
   };
 
   return (
