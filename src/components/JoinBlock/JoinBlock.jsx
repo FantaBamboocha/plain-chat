@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 
+import { useAuth } from "../../hook/useAuth";
+
 import styles from "./styles.module.scss";
 // import socket from "../../socket";
 
@@ -9,6 +11,8 @@ const JoinBlock = () => {
     roomId: "",
     userName: "",
   });
+
+  const { login } = useAuth();
 
   const roomIdRef = useRef(null);
   const userNameRef = useRef(null);
@@ -42,6 +46,7 @@ const JoinBlock = () => {
     e.preventDefault();
 
     if (validateForm()) {
+      login(formData.userName);
       console.log(formData);
     }
 

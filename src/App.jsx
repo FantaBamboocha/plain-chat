@@ -1,6 +1,9 @@
 // import { io } from "socket.io-client";
 
-import JoinBlock from "./components/JoinBlock/JoinBlock";
+import { BrowserRouter } from "react-router-dom";
+
+import AuthProvider from "./hoc/AuthProvider";
+import Router from "./routes/Router";
 
 import styles from "./App.module.scss";
 // const socket = io("http://localhost:3000");
@@ -8,7 +11,11 @@ import styles from "./App.module.scss";
 function App() {
   return (
     <div className={styles.appWrapper}>
-      <JoinBlock />
+      <BrowserRouter>
+        <AuthProvider>
+          <Router />
+        </AuthProvider>
+      </BrowserRouter>
     </div>
   );
 }
