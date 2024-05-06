@@ -1,4 +1,5 @@
 // import { io } from "socket.io-client";
+// const socket = io("http://localhost:3000");
 
 import { BrowserRouter } from "react-router-dom";
 
@@ -6,17 +7,16 @@ import AuthProvider from "./hoc/AuthProvider";
 import Router from "./routes/Router";
 
 import styles from "./App.module.scss";
-// const socket = io("http://localhost:3000");
 
 function App() {
   return (
-    <div className={styles.appWrapper}>
-      <BrowserRouter>
-        <AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <div className={styles.appWrapper}>
           <Router />
-        </AuthProvider>
-      </BrowserRouter>
-    </div>
+        </div>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

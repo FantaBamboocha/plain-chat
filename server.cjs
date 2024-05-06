@@ -6,6 +6,10 @@ const cors = require("cors");
 const app = express();
 const server = createServer(app);
 
+app.use(cors());
+
+app.use(express.json());
+
 const io = new Server(server, {
   cors: {
     origin: "http://127.0.0.1:5173", // Указываем разрешенный источник
@@ -13,14 +17,12 @@ const io = new Server(server, {
   },
 });
 
-app.use(express.json());
-
-app.use(
-  cors({
-    origin: ["http://127.0.0.1:5173", "http://localhost:3000"],
-    methods: ["GET", "POST"],
-  })
-);
+// app.use(
+//   cors({
+//     origin: ["http://127.0.0.1:5173", "http://localhost:3000"],
+//     methods: ["GET", "POST"],
+//   })
+// );
 
 const rooms = new Map();
 
@@ -43,6 +45,19 @@ app.post("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
+  socket.on("join", ({ roomId, userName }) => {
+    console.log("join", roomId, userName);
+    socket.join(roomId);
+    rooms.get(roomId).get("users").set(socket.id, userName);
+
+    const users = Array.from(rooms.get(roomId).get("users").values());
+    console.log(users);
+
+    socket.to(roomId).emit("joined", {
+      users,
+    });
+  });
+
   console.log("a user connected", socket.id);
 });
 

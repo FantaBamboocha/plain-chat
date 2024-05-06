@@ -1,10 +1,11 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { useAuth } from "../../hook/useAuth";
+import socket from "../../socket";
 
 import styles from "./styles.module.scss";
-// import socket from "../../socket";
 
 const JoinBlock = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,13 @@ const JoinBlock = () => {
 
   const roomIdRef = useRef(null);
   const userNameRef = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    socket.on("joined", (users) => {
+      console.log("у вас новенький", users);
+    });
+  }, []);
 
   const onChange = ({ target }) => {
     const { name, value } = target;
@@ -42,17 +50,22 @@ const JoinBlock = () => {
     return true;
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = async (e) => {
+    try {
+      e.preventDefault();
 
-    if (validateForm()) {
-      login(formData.userName);
-      console.log(formData);
-    }
+      if (validateForm()) {
+        login(formData.userName);
+        navigate("/");
+      }
 
-    axios.post("http://localhost:3000/", formData).then((response) => {
+      const response = await axios.post("http://localhost:3000/", formData);
+
       console.log(response.data);
-    });
+      socket.emit("join", formData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

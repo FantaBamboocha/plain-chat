@@ -13,7 +13,7 @@ const AuthProvider = ({ children }) => {
 
   const logout = (cb) => {
     setUser(null);
-    cb();
+    // cb();
   };
 
   const value = { user, login, logout };

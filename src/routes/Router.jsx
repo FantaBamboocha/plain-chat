@@ -13,10 +13,12 @@ const Router = () => {
         path={routeNames.CHAT}
         element={
           <RequireAuth>
-            <div>KUKU</div>
+            <div>Здесь будет чат с логикой на сервере, которую сделаю я</div>
           </RequireAuth>
         }
       />
+
+      <Route path={routeNames.NOT_FOUND} element={<div>404</div>} />
     </Routes>
   );
 };
